@@ -8,6 +8,7 @@ namespace TP6
     {
         List<Emitter> emitters = new List<Emitter>();
         Emitter emitter; // тут убрали явное создание
+        TeleportPoint teleport;
 
         GravityPoint point1; // добавил поле под первую точку
         GravityPoint point2; // добавил поле под вторую точку
@@ -32,21 +33,29 @@ namespace TP6
 
             emitters.Add(this.emitter); // все равно добавляю в список emitters, чтобы он рендерился и обновлялся
 
-            // привязываем гравитоны к полям
-            point1 = new GravityPoint
-            {
-                X = picDisplay.Width / 2 + 100,
-                Y = picDisplay.Height / 2,
-            };
-            point2 = new GravityPoint
-            {
-                X = picDisplay.Width / 2 - 100,
-                Y = picDisplay.Height / 2,
-            };
+            //// привязываем гравитоны к полям
+            //point1 = new GravityPoint
+            //{
+            //    X = picDisplay.Width / 2 + 100,
+            //    Y = picDisplay.Height / 2,
+            //};
+            //point2 = new GravityPoint
+            //{
+            //    X = picDisplay.Width / 2 - 100,
+            //    Y = picDisplay.Height / 2,
+            //};
 
-            // привязываем поля к эмиттеру
-            emitter.impactPoints.Add(point1);
-            emitter.impactPoints.Add(point2);
+            //// привязываем поля к эмиттеру
+            //emitter.impactPoints.Add(point1);
+            //emitter.impactPoints.Add(point2);
+
+            teleport = new TeleportPoint();
+            teleport.X = picDisplay.Width / 2 + 200;
+            teleport.Y = picDisplay.Height / 2;
+            teleport.ExitX = picDisplay.Width / 2 - 200;
+            teleport.ExitY = picDisplay.Height / 2;
+            teleport.UpdateDirection();
+            emitter.impactPoints.Add(teleport);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -69,29 +78,56 @@ namespace TP6
 
         private void picDisplay_MouseMove(object sender, MouseEventArgs e)
         {
-            // а тут в эмиттер передаем положение мыфки
-            emitter.MousePositionX = e.X;
-            emitter.MousePositionY = e.Y;
+            //// а тут в эмиттер передаем положение мыфки
+            //emitter.MousePositionX = e.X;
+            //emitter.MousePositionY = e.Y;
 
-            // а тут передаем положение мыши, в положение гравитона
-            point2.X = e.X;
-            point2.Y = e.Y;
+            //// а тут передаем положение мыши, в положение гравитона
+            //point2.X = e.X;
+            //point2.Y = e.Y;
         }
+
+        //private void picDisplay_MouseClick(object sender, MouseEventArgs e)
+        //{
+        //    if (e.Button == MouseButtons.Left)
+        //    {
+        //        teleport.X = e.X;
+        //        teleport.Y = e.Y;
+        //    }
+        //    else if (e.Button == MouseButtons.Right)
+        //    {
+        //        teleport.ExitX = e.X;
+        //        teleport.ExitY = e.Y;
+        //    }
+        //    teleport.UpdateDirection();
+        //}
+
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
+            var rnd = new Random();
             emitter.Direction = tbDirection.Value; // направлению эмиттера присваиваем значение ползунка 
             lblDirection.Text = $"{tbDirection.Value}°"; // добавил вывод значения
         }
 
-        private void tbGraviton_Scroll(object sender, EventArgs e)
-        {
-            point1.Power = tbGraviton.Value;
-        }
-
         private void tbGraviton2_Scroll(object sender, EventArgs e)
         {
-            point2.Power = tbGraviton2.Value;
+            teleport.Radius = tbTeleport.Value;
+        }
+
+        private void picDisplay_MouseClick_1(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                teleport.X = e.X;
+                teleport.Y = e.Y;
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                teleport.ExitX = e.X;
+                teleport.ExitY = e.Y;
+            }
+            teleport.UpdateDirection();
         }
     }
 }

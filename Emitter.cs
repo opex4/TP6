@@ -34,7 +34,6 @@ namespace TP6
 
         public Color ColorFrom = Color.White; // начальный цвет частицы
         public Color ColorTo = Color.FromArgb(0, Color.Black); // конечный цвет частиц
-
         public void UpdateState()
         {
             int particlesToCreate = ParticlesPerTick; // фиксируем счетчик сколько частиц нам создавать за тик
@@ -205,35 +204,35 @@ namespace TP6
                 //    stringFormat // передаем инфу о выравнивании
                 //);
 
-                var stringFormat = new StringFormat();
-                stringFormat.Alignment = StringAlignment.Center;
-                stringFormat.LineAlignment = StringAlignment.Center;
+                //var stringFormat = new StringFormat();
+                //stringFormat.Alignment = StringAlignment.Center;
+                //stringFormat.LineAlignment = StringAlignment.Center;
 
-                // обязательно выносим текст и шрифт в переменные
-                var text = $"Я гравитон\nc силой {Power}";
-                var font = new Font("Verdana", 10);
+                //// обязательно выносим текст и шрифт в переменные
+                //var text = $"Я гравитон\nc силой {Power}";
+                //var font = new Font("Verdana", 10);
 
-                // вызываем MeasureString, чтобы померить размеры текста
-                var size = g.MeasureString(text, font);
+                //// вызываем MeasureString, чтобы померить размеры текста
+                //var size = g.MeasureString(text, font);
 
-                // рисуем подложнку под текст
-                g.FillRectangle(
-                    new SolidBrush(Color.Red),
-                    X - size.Width / 2, // так как я выравнивал текст по центру то подложка должна быть центрирована относительно X,Y
-                    Y - size.Height / 2,
-                    size.Width,
-                    size.Height
-                );
+                //// рисуем подложнку под текст
+                //g.FillRectangle(
+                //    new SolidBrush(Color.Red),
+                //    X - size.Width / 2, // так как я выравнивал текст по центру то подложка должна быть центрирована относительно X,Y
+                //    Y - size.Height / 2,
+                //    size.Width,
+                //    size.Height
+                //);
 
-                // ну и текст рисую уже на базе переменных
-                g.DrawString(
-                    text,
-                    font,
-                    new SolidBrush(Color.White),
-                    X,
-                    Y,
-                    stringFormat
-                );
+                //// ну и текст рисую уже на базе переменных
+                //g.DrawString(
+                //    text,
+                //    font,
+                //    new SolidBrush(Color.White),
+                //    X,
+                //    Y,
+                //    stringFormat
+                //);
             }
         }
 
@@ -270,6 +269,45 @@ namespace TP6
 
                 particle.SpeedY = 1; // падаем вниз по умолчанию
                 particle.SpeedX = Particle.rand.Next(-2, 2); // разброс влево и вправа у частиц 
+            }
+        }
+
+
+        public class TeleportPoint : IImpactPoint
+        {
+            public float ExitX, ExitY;
+            public float Radius = 50;
+            public float OutSpeed = 10;
+            public float OutDirection;
+
+            public void UpdateDirection()
+            {
+                float dx = ExitX - X;
+                float dy = ExitY - Y;
+                OutDirection = (float)(Math.Atan2(dy, dx) * (180.0 / Math.PI));
+            }
+
+            public override void ImpactParticle(Particle particle)
+            {
+                float dx = particle.X - X;
+                float dy = particle.Y - Y;
+                if (dx * dx + dy * dy < Radius * Radius)
+                {
+                    particle.X = ExitX;
+                    particle.Y = ExitY;
+                    //particle.Life = 20 + Particle.rand.Next(100);
+                    float angleRad = OutDirection;
+                    //* (float)(Math.PI / 180.0);
+                    //particle.SpeedX = OutSpeed * (float)Math.Cos(angleRad);
+                    //particle.SpeedY = OutSpeed * (float)Math.Sin(angleRad);
+                }
+            }
+
+            public override void Render(Graphics g)
+            {
+                g.DrawEllipse(Pens.Red, X - Radius, Y - Radius, Radius * 2, Radius * 2);
+                g.DrawLine(Pens.Blue, ExitX - 10, ExitY, ExitX + 10, ExitY);
+                g.DrawLine(Pens.Blue, ExitX, ExitY - 10, ExitX, ExitY + 10);
             }
         }
 
