@@ -311,5 +311,60 @@ namespace TP6
             }
         }
 
+
+        public class LawnZone : IImpactPoint
+        {
+            public int Width;
+            public int Height;
+            public float Moisture = 100; // от 0 (сухо) до 100 (влажно)
+            public Color CurrentColor => GetColor();
+
+            public LawnZone(int x, int y, int width, int height)
+            {
+                this.X = x;
+                this.Y = y;
+                this.Width = width;
+                this.Height = height;
+            }
+
+            public override void ImpactParticle(Particle p)
+            {
+                // Проверка попадания частицы в прямоугольную область
+                if (p.X >= X && p.X <= X + Width && p.Y >= Y && p.Y <= Y + Height)
+                {
+                    Moisture = Math.Min(100, Moisture + 0.5f); // увлажнение при попадании
+                    p.Life = 0; // частица исчезает
+                }
+            }
+
+            public override void Render(Graphics g)
+            {
+                // Сухость влияет на цвет
+                var b = new SolidBrush(GetColor());
+                g.FillRectangle(b, X, Y, Width, Height);
+                b.Dispose();
+
+                // Контур
+                g.DrawRectangle(Pens.Black, X, Y, Width, Height);
+            }
+
+            private Color GetColor()
+            {
+                if (Moisture > 50)
+                    return Color.Green;
+                else if (Moisture > 25)
+                    return Color.YellowGreen;
+                else
+                    return Color.Orange;
+            }
+
+            public void Dry()
+            {
+                Moisture = Math.Max(0, Moisture - 0.3f); // Усиленное высыхание
+            }
+
+            public bool IsDead => Moisture <= 0;
+        }
+
     }
 }

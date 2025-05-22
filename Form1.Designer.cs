@@ -31,82 +31,61 @@
             components = new System.ComponentModel.Container();
             picDisplay = new PictureBox();
             timer1 = new System.Windows.Forms.Timer(components);
-            tbDirection = new TrackBar();
-            lblDirection = new Label();
-            tbTeleport = new TrackBar();
+            btnRain = new Button();
+            btnRestart = new Button();
             ((System.ComponentModel.ISupportInitialize)picDisplay).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)tbDirection).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)tbTeleport).BeginInit();
             SuspendLayout();
             // 
             // picDisplay
             // 
-            picDisplay.Location = new Point(0, 0);
+            picDisplay.Location = new Point(12, 12);
             picDisplay.Name = "picDisplay";
-            picDisplay.Size = new Size(788, 438);
+            picDisplay.Size = new Size(741, 417);
             picDisplay.TabIndex = 0;
             picDisplay.TabStop = false;
-            picDisplay.MouseClick += picDisplay_MouseClick_1;
-            picDisplay.MouseMove += picDisplay_MouseMove;
             // 
             // timer1
             // 
             timer1.Enabled = true;
-            timer1.Interval = 40;
-            timer1.Tick += timer1_Tick;
+            timer1.Interval = 20;
             // 
-            // tbDirection
+            // btnRain
             // 
-            tbDirection.Location = new Point(0, 444);
-            tbDirection.Maximum = 359;
-            tbDirection.Name = "tbDirection";
-            tbDirection.Size = new Size(225, 56);
-            tbDirection.TabIndex = 1;
-            tbDirection.Scroll += trackBar1_Scroll;
+            btnRain.Location = new Point(759, 12);
+            btnRain.Name = "btnRain";
+            btnRain.Size = new Size(152, 29);
+            btnRain.TabIndex = 1;
+            btnRain.Text = "Дождь";
+            btnRain.UseVisualStyleBackColor = true;
             // 
-            // lblDirection
+            // btnRestart
             // 
-            lblDirection.AutoSize = true;
-            lblDirection.Location = new Point(231, 444);
-            lblDirection.Name = "lblDirection";
-            lblDirection.Size = new Size(23, 20);
-            lblDirection.TabIndex = 2;
-            lblDirection.Text = "0°";
-            // 
-            // tbTeleport
-            // 
-            tbTeleport.Location = new Point(276, 444);
-            tbTeleport.Maximum = 100;
-            tbTeleport.Name = "tbTeleport";
-            tbTeleport.Size = new Size(130, 56);
-            tbTeleport.TabIndex = 4;
-            tbTeleport.Scroll += tbGraviton2_Scroll;
+            btnRestart.Location = new Point(759, 400);
+            btnRestart.Name = "btnRestart";
+            btnRestart.Size = new Size(152, 29);
+            btnRestart.TabIndex = 2;
+            btnRestart.Text = "Начать заново";
+            btnRestart.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 504);
-            Controls.Add(tbTeleport);
-            Controls.Add(lblDirection);
-            Controls.Add(tbDirection);
+            ClientSize = new Size(923, 443);
+            Controls.Add(btnRestart);
+            Controls.Add(btnRain);
             Controls.Add(picDisplay);
             Name = "Form1";
-            Text = "Form1";
-            Load += Form1_Load;
+            Text = "Поливай лужайки!";
             ((System.ComponentModel.ISupportInitialize)picDisplay).EndInit();
-            ((System.ComponentModel.ISupportInitialize)tbDirection).EndInit();
-            ((System.ComponentModel.ISupportInitialize)tbTeleport).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private PictureBox picDisplay;
         private System.Windows.Forms.Timer timer1;
-        private TrackBar tbDirection;
-        private Label lblDirection;
-        private TrackBar tbTeleport;
+        private Button btnRain;
+        private Button btnRestart;
     }
 }
